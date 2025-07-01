@@ -8,8 +8,9 @@ import InfoCard from '../../components/cards/InfoCard';
 import {IoMdCard} from 'react-icons/io';
 import { LuHandCoins, LuWalletMinimal } from 'react-icons/lu';
 import { addThousandSeperator } from '../../utils/helper';
-
-
+import RecentTransactions from '../../components/dashboard/RecentTransaction';
+import FinanceOverview from '../../components/dashboard/FinanceOverview';
+import ExpenseTransactions from '../../components/dashboard/ExpenseTransactions';
 
 
 const Home = () => {
@@ -68,6 +69,25 @@ const Home = () => {
         />
       </div>
     </div>
+
+    <div className='grid grid-cols-1 md:grid-cols-2 gap-6 mt-6'>
+      <RecentTransactions 
+        transactions={dashboardData?.data?.recentTransactions || []}
+        onSeeMore={()=>navigate("/expense")}
+      />
+       <FinanceOverview 
+     totalBalance ={dashboardData?.data.balance || 0 }
+     totalIncome ={dashboardData?.data.totalIncome || 0}
+     totalExpense ={dashboardData?.data.totalExpense || 0}
+    />
+
+    <ExpenseTransactions 
+    transactions={dashboardData?.data?.last30DaysExpensesArray || []}
+    onSeeMore={()=>navigate("/expense")}
+    />
+    </div>
+
+   
    </DashboardLayout>
   )
 }

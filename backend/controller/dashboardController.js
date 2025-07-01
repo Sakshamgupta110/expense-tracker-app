@@ -70,6 +70,11 @@ const getDashboardData = async (req, res) => {
       }))
     ].sort((a, b) => new Date(b.date) - new Date(a.date)).slice(0, 5);
 
+    const last30DaysExpensesArray = await Expense.find({
+      userId,
+      date: { $gte: last30 }
+    }).sort({ date: -1 });
+
     return res.status(200).json(
       new ApiResponse(200, "Dashboard data fetched successfully", {
         totalIncome,
@@ -79,7 +84,8 @@ const getDashboardData = async (req, res) => {
         last30DaysExpense,
         last60DaysIncome,
         last60DaysExpense,
-        recentTransactions
+        recentTransactions,
+        last30DaysExpensesArray
       })
     );
   } catch (error) {
