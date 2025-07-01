@@ -35,10 +35,10 @@ const registerUser = async (req, res) => {
         "Something when wrong while registering the user"
       );
     }
-
+  const token = generateToken(user._id);
     return res
       .status(201)
-      .json(new ApiResponse(200, createdUser, "User created successfully"));
+      .json(new ApiResponse(200, {createdUser,token}, "User created successfully"));
   } catch (err) {
     res
       .status(500)
@@ -61,7 +61,6 @@ const loginUser = async (req, res) => {
       throw new ApiError(401, "Invalid password");
     }
     const token = generateToken(user._id);
-    // You can generate a token here if needed
     return res
       .status(200)
       .json(new ApiResponse(200, { user, token }, "Login successful"));

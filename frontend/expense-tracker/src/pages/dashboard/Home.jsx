@@ -1,8 +1,74 @@
-import React from 'react'
+import React,{useState,useEffect} from 'react'
+import DashboardLayout from '../../components/layouts/DashboardLayout'
+import useUserAuth from '../../hooks/useUserAuth';
+import { useNavigate } from 'react-router-dom';
+import axiosInstance from '../../utils/axiosInstance';
+import ApiPaths from '../../utils/ApiPaths';
+import InfoCard from '../../components/cards/InfoCard';
+import {IoMdCard} from 'react-icons/io';
+import { LuHandCoins, LuWalletMinimal } from 'react-icons/lu';
+import { addThousandSeperator } from '../../utils/helper';
+
+
+
 
 const Home = () => {
+  useUserAuth();
+
+  const navigate = useNavigate();
+
+  const [dashboardData, setDashboardData] = useState(null);
+  const [loading, setLoading] = useState(false);
+
+
+  const fetchDashboardData = async () =>{
+    if(loading) return;
+
+    setLoading(true);
+    try {
+      const response = await axiosInstance.get(`${ApiPaths.DASHBOARD.GET_DATA
+      }`)
+      if(response.data)
+        setDashboardData(response.data);
+    } catch (error) {
+      console.log("something went wrong .plese try again ",error)
+    }
+    finally{
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchDashboardData();
+    return ()=>{}
+  }, [])
+
+  
   return (
-    <div>Home</div>
+   <DashboardLayout activemenu="Dashboard">
+    <div className='my-5 mx-auto'>
+      <div className='grid grid-cols-1 md:grid-cols-3 gap-6'>
+        <InfoCard 
+          icon={<IoMdCard />}
+          label="Total Balance"
+          value={dashboardData ? addThousandSeperator(dashboardData.data?.balance || 0) : '...'}
+          color="bg-violet-500"
+        />
+        <InfoCard 
+          icon={<LuWalletMinimal />}
+          label="Total Income"
+          value={dashboardData ? addThousandSeperator(dashboardData.data?.totalIncome || 0) : '...'}
+          color="bg-orange-500"
+        />
+        <InfoCard 
+          icon={<LuHandCoins />}
+          label="Total Expense"
+          value={dashboardData ? addThousandSeperator(dashboardData.data?.totalExpense || 0) : '...'}
+          color="bg-red-500"
+        />
+      </div>
+    </div>
+   </DashboardLayout>
   )
 }
 

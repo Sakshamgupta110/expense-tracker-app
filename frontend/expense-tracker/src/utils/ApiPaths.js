@@ -19,7 +19,7 @@ const ApiPaths = {
     DOWNLOAD_EXPENSE: '/api/v1/expense/downloadexcel',
   },
   DASHBOARD: {
-    GET_DATA: '/api/v1/expense/', // GET
+    GET_DATA: '/api/v1/dashboard', // GET
   },
   IMAGE:{
   UPLOADS_IMAGE:`/api/v1/auth/upload`
