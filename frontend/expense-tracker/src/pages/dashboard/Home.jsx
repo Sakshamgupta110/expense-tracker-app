@@ -11,6 +11,9 @@ import { addThousandSeperator } from '../../utils/helper';
 import RecentTransactions from '../../components/dashboard/RecentTransaction';
 import FinanceOverview from '../../components/dashboard/FinanceOverview';
 import ExpenseTransactions from '../../components/dashboard/ExpenseTransactions';
+import Last30DaysExpenses from '../../components/dashboard/last30DaysExpenses';
+import RecentIncomeWithChart from '../../components/dashboard/RecentIncomeWithChart';
+import RecentIncome from '../../components/dashboard/RecentIncome';
 
 
 const Home = () => {
@@ -85,6 +88,18 @@ const Home = () => {
     transactions={dashboardData?.data?.last30DaysExpensesArray || []}
     onSeeMore={()=>navigate("/expense")}
     />
+
+    <Last30DaysExpenses 
+    data={dashboardData?.data?.last30DaysExpensesArray || []} 
+    />
+
+    <RecentIncome 
+    transactions={dashboardData?.data.last60DaysIncomeArray.slice(0,5) || []}
+    onSeeMore={()=>navigate("/income")} />
+
+    <RecentIncomeWithChart 
+    data={dashboardData?.data.last60DaysIncomeArray || []}
+    totalIncome={dashboardData?.data.totalIncome || 0} />
     </div>
 
    

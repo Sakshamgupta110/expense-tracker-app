@@ -64,6 +64,7 @@ const getDashboardData = async (req, res) => {
       ...recentExpenses.map(e => ({
         type: "expense",
         category: e.category,
+        source: e.category,
         amount: e.amount,
         date: e.date,
         _id: e._id
@@ -73,6 +74,21 @@ const getDashboardData = async (req, res) => {
     const last30DaysExpensesArray = await Expense.find({
       userId,
       date: { $gte: last30 }
+    }).sort({ date: -1 });
+
+    const last30DaysIncomeArray = await Income.find({
+      userId,
+      date: { $gte: last30 }
+    }).sort({ date: -1 });
+
+    const last60DaysExpensesArray = await Expense.find({
+      userId,
+      date: { $gte: last60 }
+    }).sort({ date: -1 });
+
+    const last60DaysIncomeArray = await Income.find({
+      userId,
+      date: { $gte: last60 }
     }).sort({ date: -1 });
 
     return res.status(200).json(
@@ -85,7 +101,10 @@ const getDashboardData = async (req, res) => {
         last60DaysIncome,
         last60DaysExpense,
         recentTransactions,
-        last30DaysExpensesArray
+        last30DaysExpensesArray,
+        last30DaysIncomeArray,
+        last60DaysExpensesArray,
+        last60DaysIncomeArray
       })
     );
   } catch (error) {

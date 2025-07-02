@@ -20,10 +20,6 @@ const SideMenu = ({ activemenu }) => {
     clearUser();
     navigate("/login");
   };
-
-  // Debug: Log the activemenu prop
-  console.log('activemenu prop:', activemenu);
-
   return (
     <div className="h-full bg-white shadow-lg border-r border-gray-200">
       <div className="p-6 border-b border-gray-200">
@@ -51,7 +47,6 @@ const SideMenu = ({ activemenu }) => {
       <div className="p-4">
         {SIDE_MENU_DATA.map((item, index) => {
           const isActive = activemenu === item.label;
-          console.log(`Comparing: "${activemenu}" === "${item.label}" = ${isActive}`);
           return (
             <button
               key={`menu_${index}`}
