@@ -26,7 +26,7 @@ const EmojiPickerPopup = ({ icon, onSelect }) => {
             <LuImage className="text-gray-400 text-xl" />
           )}
         </button>
-        <span className="text-sm text-gray-600">Select an emoji for your income source</span>
+        {icon ? (<span className="text-sm text-gray-600">change emoji</span>) : (<span className="text-sm text-gray-600">Select an emoji for your income source</span>)}
       </div>
 
       {isOpen && (

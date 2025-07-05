@@ -8,7 +8,9 @@ const TransactionCardInfo = ({title, icon, date, amount, type, hideDeleteBtn}) =
   return (
     <div className='group relative flex items-center gap-4 mt-2 p-3 rounded-lg hover:bg-gray-50 transition-colors duration-200'>
         <div className='w-12 h-12 flex items-center justify-center text-xl text-gray-900 bg-gray-100 rounded-full gap-3'>
-            {icon ? (<img src={icon} alt={title} className='w-6 h-6'/>):
+            {icon ? (
+              <span className='w-6 h-6 flex items-center justify-center text-xl'>{icon}</span>
+            ) :
             (<LuUtensils className='text-2xl text-gray-700'/>)
             }
         </div>
