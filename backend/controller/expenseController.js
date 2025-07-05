@@ -12,7 +12,7 @@ import fs from "fs";
 
 const addExpense = async (req, res) => {
   try {
-    const { category, amount, date } = req.body;
+    const { category, amount, date,icon } = req.body;
     if (!category || !amount) {
       return res.status(400).json(new ApiResponse(400, "Category and amount are required"));
     }
@@ -24,6 +24,7 @@ const addExpense = async (req, res) => {
       category,
       amount,
       date: expenseDate,
+      icon,
       userId: req.user._id
     });
     await expense.save();

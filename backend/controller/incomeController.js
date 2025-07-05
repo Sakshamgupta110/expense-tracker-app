@@ -12,7 +12,7 @@ import fs from "fs";
 
 const addIncome = async (req, res) => {
   try {
-    const { source, amount, date } = req.body;
+    const { source, amount, date, icon } = req.body;
 
     // Validate required fields
     if (!source || !amount) {
@@ -36,6 +36,7 @@ const addIncome = async (req, res) => {
       source,
       amount,
       date: incomeDate,
+      icon,
       userId: req.user._id 
     });
 
