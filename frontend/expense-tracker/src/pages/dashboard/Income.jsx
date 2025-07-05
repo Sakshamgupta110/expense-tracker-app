@@ -3,6 +3,8 @@ import DashboardLayout from "../../components/layouts/DashboardLayout";
 import IncomeOverview from "../../components/income/IncomeOverview";
 import axiosInstance from "../../utils/axiosInstance";
 import ApiPaths from "../../utils/ApiPaths";
+import Modal from "../../components/modal/Modal";
+import AddIncomeForm from "../../components/income/AddIncomeForm";
 
 const Income = () => {
   const [incomeData, setIncomeData] = useState([]);
@@ -48,11 +50,19 @@ const Income = () => {
         <div className="grid grid-cols-1 gap-6">
           <div>
             <IncomeOverview
-              transactions={incomeData}
+              transactions={incomeData?.data}
               onAddIncome={() => setOpenAddIncomeModal(true)}
             />
           </div>
         </div>
+
+        <Modal
+          isOpen={openAddIncomeModal}
+          onClose={() => setOpenAddIncomeModal(false)}
+          title="Add Income"
+        >
+          <AddIncomeForm onAddIncome={handleAddIncome} />
+        </Modal>
       </div>
     </DashboardLayout>
   );

@@ -24,12 +24,12 @@ export const prepareExpenseBarChartData = (data = []) => {
 
 
 
- export const prepareIncomeBarChartData = (data = []) => {
+  export const prepareIncomeBarChartData = (data = []) => {
+    // Sort by date for chronological order
     const sortedData = [...data].sort((a, b) => new Date(a.date) - new Date(b.date));
-    const chartData = sortedData.map(item => ({
-    month: moment(item?.date).format('Do MMM'),
-    amount: item?.amount,
-    source: item?.source,
-    }) );
-    return chartData;
-}
+    return sortedData.map(item => ({
+      date: moment(item?.date).format('Do MMM YYYY'), // e.g., "25th Jun 2024"
+      amount: item?.amount,
+      source: item?.source,
+    }));
+  };
