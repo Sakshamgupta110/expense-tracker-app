@@ -8,6 +8,10 @@ import toast from "react-hot-toast";
 import DeleteAlert from "../../components/DeleteAlert";
 import TransactionCardInfo from "../../components/cards/TransactionCardInfo";
 import useUserAuth from "../../hooks/useUserAuth";
+import ExpenseLineChart from "../../components/charts/ExpenseLineChart";
+import { prepareExpenseLineChartData } from "../../utils/helper";
+import ExpenseOverview from "../../components/expense/ExpenseOverview";
+import ExpenseList from "../../components/expense/ExpenseList";
 
 const Expense = () => {
   useUserAuth();
@@ -63,31 +67,43 @@ const Expense = () => {
     }
   };
 
+  const chartData = prepareExpenseLineChartData(expenseData.data || []);
+
+  const handleDownloadExpenseDetails = async () => {
+    try {
+      const response = await axiosInstance.get(ApiPaths.EXPENSE.DOWNLOAD_EXPENSE, {
+        responseType: 'blob', // Important for file downloads
+      });
+
+      // Create a URL for the blob
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', 'expense_details.xlsx'); // Set the file name
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      window.URL.revokeObjectURL(url);
+      toast.success("Expense details downloaded!");
+    } catch (error) {
+      toast.error("Failed to download expense details.");
+      console.error("Download error:", error);
+    }
+  };
+
   return (
     <DashboardLayout activeMenu="Expense">
       <div className="my-5 mx-auto">
-        <div className="flex justify-end mb-4">
-          <button className="add-btn" onClick={() => setOpenAddExpenseModal(true)}>
-            + Add Expense
-          </button>
-        </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {expenseData?.data && expenseData.data.length > 0 ? (
-            expenseData.data.map((expense) => (
-              <TransactionCardInfo
-                key={expense._id}
-                title={expense.category}
-                icon={expense.icon}
-                date={expense.date}
-                amount={expense.amount}
-                type="expense"
-                onDelete={() => setOpenDeleteAlert({ show: true, data: expense._id })}
-              />
-            ))
-          ) : (
-            <div className="col-span-full text-center text-gray-400 py-4">No expense records found.</div>
-          )}
-        </div>
+        <ExpenseOverview
+          transactions={chartData}
+          onAddExpense={() => setOpenAddExpenseModal(true)}
+        />
+
+        <ExpenseList
+          transactions={expenseData.data || []}
+          onDelete={(id) => setOpenDeleteAlert({ show: true, data: id })}
+          onDownload={handleDownloadExpenseDetails}
+        />
 
         <Modal
           isOpen={openAddExpenseModal}
